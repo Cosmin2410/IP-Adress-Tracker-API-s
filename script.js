@@ -1,7 +1,9 @@
 // Map
+const map = L.map('map');
 
 const coordinates = (lat, lng) => {
-  const map = L.map('map').setView([lat, lng], 12);
+  map.setView([lat, lng], 13);
+
   const osm = L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
@@ -11,7 +13,16 @@ const coordinates = (lat, lng) => {
   );
   osm.addTo(map);
 
-  const marker = L.marker([lat, lng]).addTo(map);
+  const locationIcon = L.icon({
+    iconUrl: 'images/icon-location.svg',
+
+    iconSize: [40, 50],
+    iconAnchor: [20, 50],
+  });
+
+  map.zoomControl.remove();
+
+  L.marker([lat, lng], { icon: locationIcon }).addTo(map);
 };
 
 // API
@@ -20,14 +31,17 @@ const ipText = document.querySelector('.ip');
 const city = document.querySelector('.city');
 const timezone = document.querySelector('.timezone');
 const isp = document.querySelector('.isp');
-let ip = '';
+const input = document.querySelector('.ip-input');
+const btn = document.querySelector('.ip-submit');
 
 const getIP = async () => {
   const response = await fetch('https://api.ipify.org?format=json');
   const data = await response.json();
-  ip = data.ip;
+
+  let ip = data.ip;
 
   getDataOnLoad(ip);
+  getDataOnSubmit(ip);
 };
 
 const getDataOnLoad = async (ip) => {
@@ -36,17 +50,22 @@ const getDataOnLoad = async (ip) => {
   );
   const data = await response.json();
 
-  let lat = data.location.lat;
-  let lng = data.location.lng;
+  lat = data.location.lat;
+  lng = data.location.lng;
 
-  console.log(data);
-  console.log(data.location.city);
   ipText.innerHTML = data.ip;
   city.innerHTML = `${data.location.city}, ${data.location.region}`;
-  timezone.innerHTML = data.location.timezone;
+  timezone.innerHTML = `UTC ${data.location.timezone}`;
   isp.innerHTML = data.isp;
 
   coordinates(lat, lng);
+};
+
+const getDataOnSubmit = (ip) => {
+  btn.addEventListener('click', () => {
+    ip = input.value;
+    getDataOnLoad(ip);
+  });
 };
 
 getIP();

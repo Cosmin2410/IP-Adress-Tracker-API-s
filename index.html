@@ -16,11 +16,39 @@
     <title>IP Address Tracker</title>
   </head>
   <body>
-    <div class="titles">
-      <p class="ip"></p>
-      <p class="city"></p>
-      <p class="timezone"></p>
-      <p class="isp"></p>
+    <div class="address-tracker">
+      <h1>IP Address Tracker</h1>
+
+      <div class="input">
+        <input
+          class="ip-input"
+          type="text"
+          placeholder="Search for any IP address or domain"
+        />
+        <button class="ip-submit"><img src="images/icon-arrow.svg" /></button>
+      </div>
+
+      <div class="addresses">
+        <div class="row">
+          <p>ID ADRESS</p>
+          <h3 class="ip"></h3>
+        </div>
+
+        <div class="row">
+          <p>LOCATION</p>
+          <h3 class="city"></h3>
+        </div>
+
+        <div class="row">
+          <p>TIMEZONE</p>
+          <h3 class="timezone"></h3>
+        </div>
+
+        <div class="row">
+          <p>ISP</p>
+          <h3 class="isp"></h3>
+        </div>
+      </div>
     </div>
 
     <div id="map"></div>
